@@ -1,34 +1,66 @@
-<h2>Login</h2>
-<input type="text" id="usuario" placeholder="Usuário">
-<input type="password" id="senha" placeholder="Senha">
-<button onclick="fazerLogin()">Entrar</button>
-
-<script>
-function fazerLogin(){
-
-  const usuario = document.getElementById("usuario").value;
-  const senha = document.getElementById("senha").value;
-
-  fetch("/login",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify({
-      usuario:usuario,
-      senha:senha
-    })
-  })
-  .then(res => res.json())
-  .then(data =>{
-
-    if(data.sucesso){
-      window.location.href = "index.html";
-    }else{
-      alert(data.msg);
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 50px;
+      text-align: center;
     }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 200px;
+    }
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3498db;
+    }
+  </style>
+</head>
+<body>
 
-  })
+  <h2>Login</h2>
+  <input type="text" id="usuario" placeholder="Usuário"><br>
+  <input type="password" id="senha" placeholder="Senha"><br>
+  <button onclick="fazerLogin()">Entrar</button>
 
-}
-</script>
+  <script>
+    function fazerLogin() {
+      const usuario = document.getElementById("usuario").value;
+      const senha = document.getElementById("senha").value;
+
+      // URL do backend online no Railway
+      fetch("https://mapeamento-cd-prpduction.up.railway.app/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, senha })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.sucesso) {
+          // Redireciona para o index.html online
+          window.location.href = "https://mapeamento-cd-prpduction.up.railway.app/index.html";
+        } else {
+          alert(data.msg);
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao conectar com o servidor:", err);
+        alert("Não foi possível conectar com o servidor.");
+      });
+    }
+  </script>
+
+</body>
+</html>
