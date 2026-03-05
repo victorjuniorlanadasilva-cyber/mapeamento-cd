@@ -70,6 +70,22 @@ db.query(createUsuarios, (err, result) => {
     else console.log("Usuário admin inserido com sucesso!");
   });
 });
+const createMapeamentos = `
+CREATE TABLE IF NOT EXISTS mapeamentos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  numero_pedido VARCHAR(50),
+  numero_artigo VARCHAR(50),
+  endereco VARCHAR(50),
+  setor VARCHAR(10),
+  status VARCHAR(20) DEFAULT 'MAPEADO',
+  data_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+`;
+
+db.query(createMapeamentos, (err, result) => {
+  if(err) console.error("Erro ao criar tabela mapeamentos:", err);
+  else console.log("Tabela mapeamentos pronta!");
+});
 app.post("/login", (req, res) => {
   const { usuario, senha } = req.body;
 
@@ -160,5 +176,6 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
 
 
