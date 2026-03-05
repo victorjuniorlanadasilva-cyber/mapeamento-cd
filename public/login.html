@@ -5,23 +5,34 @@
 
 <script>
 function fazerLogin() {
+
   const usuario = document.getElementById("usuario").value;
   const senha = document.getElementById("senha").value;
 
-  fetch("http://localhost:3000/login", { // Depois substituí por link do Railway
+  fetch("/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ usuario, senha })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      usuario: usuario,
+      senha: senha
+    })
   })
-  .then(res => res.json())
-  .then(data => {
-    if(data.sucesso) {
-      alert(data.msg);
-      // Aqui você pode redirecionar para a página principal
+  .then(res => res.text())
+  .then(resposta => {
+
+    if(resposta === "ok") {
+
       window.location.href = "index.html";
+
     } else {
-      alert(data.msg);
+
+      alert("Usuário ou senha inválidos");
+
     }
+
   });
+
 }
 </script>
