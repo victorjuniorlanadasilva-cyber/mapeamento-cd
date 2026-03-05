@@ -18,11 +18,11 @@ app.get("/", (req, res) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = mysql.createConnection({
-  host: "ballast.proxy.rlwy.net",
+  host: "switchback.proxy.rlwy.net",
   user: "root",
-  password: "JneMlyKkxuFZWllAJRAwodADPNnXjUNo",
+  password: "ZLxXAZNoAuMydsHxwVskXLpuoQvLcwcx",
   database: "railway",
-  port: 30323
+  port: 59728
 });
 
 db.connect(err => {
@@ -160,4 +160,5 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
 
