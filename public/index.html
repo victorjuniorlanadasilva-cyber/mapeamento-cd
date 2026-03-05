@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,28 +70,23 @@
   <h3>Buscar por Pedido</h3>
   <input type="text" id="buscarPedido">
   <button onclick="buscar()">Buscar</button>
-<label>Filtrar por Setor:</label>
-<select id="filtroSetor">
-  <option value="">Todos</option>
-  <option value="K">K</option>
-  <option value="EV">EV</option>
-  <option value="EL">EL</option>
-</select>
+  <label>Filtrar por Setor:</label>
+  <select id="filtroSetor">
+    <option value="">Todos</option>
+    <option value="K">K</option>
+    <option value="EV">EV</option>
+    <option value="EL">EL</option>
+  </select>
 
-<button onclick="exportarExcel()">Exportar para Excel</button>
+  <button onclick="exportarExcel()">Exportar para Excel</button>
 
-<label>Filtrar por Setor:</label>
-<select id="filtroSetor">
-  <option value="">Todos</option>
-  <option value="K">K</option>
-  <option value="EV">EV</option>
-  <option value="EL">EL</option>
-</select>
   <ul id="resultado"></ul>
 
 <script>
+const BASE_URL = "https://mapeamento-cd-prpduction.up.railway.app";
+
 function salvar() {
-  fetch("http://localhost:3000/adicionar", {
+  fetch(`${BASE_URL}/adicionar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -107,9 +103,7 @@ function salvar() {
 function buscar() {
   const pedido = document.getElementById("buscarPedido").value;
   const setorSelecionado = document.getElementById("filtroSetor").value;
-
-  // Se digitou pedido, busca o específico; se deixou em branco, busca todos
-  const url = pedido ? "http://localhost:3000/buscar/" + pedido : "http://localhost:3000/buscar";
+  const url = pedido ? `${BASE_URL}/buscar/${pedido}` : `${BASE_URL}/buscar`;
 
   fetch(url)
     .then(res => res.json())
@@ -118,8 +112,8 @@ function buscar() {
       lista.innerHTML = "";
 
       dados
-        .filter(item => item.status === "MAPEADO") // só pendentes
-        .filter(item => setorSelecionado === "" || item.setor === setorSelecionado) // filtro por setor
+        .filter(item => item.status === "MAPEADO")
+        .filter(item => setorSelecionado === "" || item.setor === setorSelecionado)
         .forEach(item => {
           const li = document.createElement("li");
           li.innerHTML = `
@@ -134,59 +128,42 @@ function buscar() {
         });
     });
 }
+
 function baixar(id) {
-  fetch("http://localhost:3000/baixar/" + id, {
-    method: "PUT"
-  })
-  .then(res => res.text())
-  .then(msg => {
-    alert(msg);
-  });
+  fetch(`${BASE_URL}/baixar/${id}`, { method: "PUT" })
+    .then(res => res.text())
+    .then(msg => alert(msg));
 }
 
 function exportarExcel() {
-  window.location.href = "http://localhost:3000/exportar";
+  window.location.href = `${BASE_URL}/exportar`;
 }
+
 // ENTER AUTOMÁTICO + LIMPAR CAMPOS
-document.getElementById("pedido").addEventListener("keydown", function(e) {
-  if(e.key === "Enter") {
-    e.preventDefault();
-    document.getElementById("artigo").focus();
-  }
+document.getElementById("pedido").addEventListener("keydown", e => {
+  if(e.key === "Enter"){ e.preventDefault(); document.getElementById("artigo").focus(); }
 });
-
-document.getElementById("artigo").addEventListener("keydown", function(e) {
-  if(e.key === "Enter") {
-    e.preventDefault();
-    document.getElementById("endereco").focus();
-  }
+document.getElementById("artigo").addEventListener("keydown", e => {
+  if(e.key === "Enter"){ e.preventDefault(); document.getElementById("endereco").focus(); }
 });
-
-document.getElementById("endereco").addEventListener("keydown", function(e) {
-  if(e.key === "Enter") {
-    e.preventDefault();
-    document.getElementById("setor").focus();
-  }
+document.getElementById("endereco").addEventListener("keydown", e => {
+  if(e.key === "Enter"){ e.preventDefault(); document.getElementById("setor").focus(); }
 });
-
-document.getElementById("setor").addEventListener("keydown", function(e) {
-  if(e.key === "Enter") {
+document.getElementById("setor").addEventListener("keydown", e => {
+  if(e.key === "Enter"){
     e.preventDefault();
-    salvar(); // Salva automaticamente
-    // Limpa os campos
+    salvar();
     document.getElementById("pedido").value = "";
     document.getElementById("artigo").value = "";
     document.getElementById("endereco").value = "";
-    document.getElementById("setor").value = "K"; // opcional: seta padrão
-    // Volta o foco para o pedido
+    document.getElementById("setor").value = "K";
     document.getElementById("pedido").focus();
   }
 });
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js')
-    .then(() => console.log('Service Worker registrado!'));
-}
 
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(() => console.log('Service Worker registrado!'));
+}
 </script>
 
 </body>
