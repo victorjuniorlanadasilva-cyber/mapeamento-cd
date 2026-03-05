@@ -5,9 +5,7 @@ const ExcelJS = require("exceljs");
 
 const app = express();
 const path = require("path");
-app.use(express.static(path.join(__dirname, "public")));
 
-// Pasta onde ficam os arquivos HTML
 app.use(express.static(path.join(__dirname, "public"))); 
 app.use(cors());
 app.use(express.json());
