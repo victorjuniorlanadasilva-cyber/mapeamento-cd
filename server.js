@@ -72,13 +72,13 @@ db.query(createUsuarios, (err, result) => {
   });
 });
 const createMapeamentos = `
-CREATE TABLE IF NOT EXISTS mapeamentos (
+CREATE TABLE IF NOT EXISTS mapeamentos2 (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  numero_pedido VARCHAR(50),
-  numero_artigo VARCHAR(50),
-  endereco VARCHAR(50),
-  setor VARCHAR(10),
-  status VARCHAR(20) DEFAULT 'MAPEADO',
+  numero_pedido VARCHAR(255),
+  numero_artigo VARCHAR(255),
+  endereco VARCHAR(255),
+  setor VARCHAR(255),
+  status VARCHAR(10) DEFAULT 'MAPEADO',
   data_registro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 `;
@@ -114,7 +114,7 @@ app.get("/buscar", (req, res) => {
 // Rota para buscar apenas um pedido específico
 app.get("/buscar/:pedido", (req, res) => {
   const pedido = req.params.pedido;
-  const sql = "SELECT * FROM mapeamentos WHERE numero_pedido = ?";
+  const sql = "SELECT * FROM mapeamentos2 WHERE numero_pedido = ?";
   db.query(sql, [pedido], (err, results) => {
     if(err) throw err;
     res.json(results);
@@ -125,7 +125,7 @@ app.put("/baixar/:id", (req, res) => {
   const id = req.params.id;
 
   const sql = `
-    UPDATE mapeamentos 
+    UPDATE mapeamentos2 
     SET status = 'RECEBIDO'
     WHERE id = ?
   `;
@@ -139,7 +139,7 @@ app.put("/baixar/:id", (req, res) => {
   });
 });
 app.get("/exportar", (req, res) => {
-  db.query("SELECT * FROM mapeamentos WHERE status='MAPEADO'", (err, results) => {
+  db.query("SELECT * FROM mapeamentos2 WHERE status='MAPEADO'", (err, results) => {
     if (err) throw err;
 
     const workbook = new ExcelJS.Workbook();
@@ -177,6 +177,7 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
 
 
 
