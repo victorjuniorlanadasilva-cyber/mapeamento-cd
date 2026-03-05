@@ -9,9 +9,12 @@ const path = require("path");
 app.use(cors());
 app.use(express.json());
 
+// rota inicial abre login
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
+
+// arquivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = mysql.createConnection({
@@ -154,11 +157,7 @@ app.get("/exportar", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/login.html");
 });
-
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
-
 });
-
-
 
