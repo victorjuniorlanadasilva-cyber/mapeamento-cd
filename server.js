@@ -42,6 +42,7 @@ app.post("/adicionar", (req, res) => {
 
   db.query(sql, [numero_pedido, numero_artigo, endereco, setor], (err, result) => {
     if (err) {
+      console.log(err);   
       res.status(500).send("Erro ao salvar");
     } else {
       res.send("Salvo com sucesso!");
@@ -176,6 +177,7 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
 
 
 
