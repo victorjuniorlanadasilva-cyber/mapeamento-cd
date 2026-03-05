@@ -147,7 +147,11 @@ app.get("/exportar", (req, res) => {
     workbook.xlsx.write(res).then(() => res.end());
   });
 });
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/login.html");
+});
 
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
+
 });
