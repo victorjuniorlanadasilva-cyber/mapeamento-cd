@@ -36,7 +36,7 @@ app.post("/adicionar", (req, res) => {
   const { numero_pedido, numero_artigo, endereco, setor } = req.body;
 
   const sql = `
-    INSERT INTO mapeamentos (numero_pedido, numero_artigo, endereco, setor)
+    INSERT INTO mapeamentos2 (numero_pedido, numero_artigo, endereco, setor)
     VALUES (?, ?, ?, ?)
   `;
 
@@ -103,7 +103,7 @@ app.post("/login", (req, res) => {
 
 // Rota para buscar TODOS os pedidos
 app.get("/buscar", (req, res) => {
-  const sql = "SELECT * FROM mapeamentos";
+  const sql = "SELECT * FROM mapeamentos2";
   db.query(sql, (err, results) => {
     if(err) throw err;
     res.json(results);
@@ -176,6 +176,7 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
 
 
 
